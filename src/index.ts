@@ -1,11 +1,27 @@
-import { Hono } from 'hono';
-import { serve } from '@hono/node-server';
+export const serverUrl = process.env.SERVER_URL!;
+export const webClientUrl = process.env.WEB_CLIENT_URL!;
 
-const allroutes = new Hono();
+export const betterAuthSecret = process.env.BETTER_AUTH_SECRET!;import { serve } from "@hono/node-server";
+import { Hono } from "hono";
+import { authenticationsRoute } from "./routes/authentications";
+import { cors } from "hono/cors";
+import { webClientUrl } from "./utils/environment";
 
-allroutes.get('', (context) => {
-  return context.json({
-    message: 'Hello World!',
-});
-}
+const allRoutes = new Hono();
+
+allRoutes.use(
+  cors({
+    origin: webClientUrl,
+    allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowHeaders: ["Authorization", "Content-Type"],
+    exposeHeaders: ["Content-Length"],
+    credentials: true,
+    maxAge: 600,
+  }),
 );
+
+allRoutes.route("/authentications", authenticationsRoute);
+
+serve(allRoutes, ({ port }) => {
+  console.log(`\tRunning at http://localhost:${port}`);
+});
