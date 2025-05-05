@@ -7,3 +7,5 @@ allroutes.get('', (context) => {
   return context.json({
     message: 'Hello World!',
 });
+}
+);
