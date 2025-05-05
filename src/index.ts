@@ -1,7 +1,4 @@
-export const serverUrl = process.env.SERVER_URL!;
-export const webClientUrl = process.env.WEB_CLIENT_URL!;
-
-export const betterAuthSecret = process.env.BETTER_AUTH_SECRET!;import { serve } from "@hono/node-server";
+import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { authenticationsRoute } from "./routes/authentications";
 import { cors } from "hono/cors";
